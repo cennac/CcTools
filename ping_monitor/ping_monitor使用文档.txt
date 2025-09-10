@@ -1,0 +1,77 @@
+脚本名称：
+ping_monitor.sh – 多 IP 网络连通性守护脚本
+
+核心功能：
+并行循环 ping 多个目标 IP（可配置数组）。
+检测间隔 5 秒，实时记录“正常/故障”状态。
+只记录状态变化（正常↔故障）到告警日志，避免刷屏；同时可选邮件通知。
+日志按天自动切割：
+普通流水日志 /var/log/ping_monitor/YYYY-MM-DD.log
+状态变化日志 /var/log/ping_alert/YYYY-MM-DD.log
+由系统 logrotate 每天零点切分，仅保留最近 7 天。
+支持 start / stop / status 三种操作，PID 文件防重复启动。
+全程后台运行，零人工干预，适合服务器 7×24 网络质量监控。
+
+
+
+命令：
+一次性完成安装/授权
+cp  ping_monitor.sh /usr/local/bin/
+chmod +x /usr/local/bin/ping_monitor.sh
+
+启动命令
+ping_monitor.sh start
+
+停止命令
+ping_monitor.sh stop
+
+重启命令
+ping_monitor.sh restart
+
+查看状态
+ping_monitor.sh status
+
+
+日志文件
+普通流水：/var/log/ping_monitor.log
+状态变化：/var/log/ping_alert.log
+
+查看文件
+cat /var/log/ping_monitor.log
+cat /var/log/ping_alert.log
+
+实时查看
+tail -f /var/log/ping_monitor.log
+
+
+-----------------------------------------------------------------------------------------
+日志切片
+新建文件 /etc/logrotate.d/ping_monitor 内容如下：
+
+/var/log/ping_monitor.log
+/var/log/ping_alert.log
+{
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    dateext
+    dateformat -%Y-%m-%d
+    olddir /var/log/ping_monitor
+}
+
+
+一次性创建目录并授权：
+sudo mkdir -p /var/log/ping_monitor
+sudo chown root:root /var/log/ping_monitor
+sudo chmod 755 /var/log/ping_monitor
+
+立即手工验证一次（看是否报错）：
+sudo logrotate -vf /etc/logrotate.d/ping_monitor
+
+
+
+
