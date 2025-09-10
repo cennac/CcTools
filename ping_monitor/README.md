@@ -73,14 +73,14 @@ tail -f /var/log/ping_monitor.log
 }
 ``` 
 
-### 一次性创建目录并授权：
+### 一次性创建目录并授权
 ``` 
 sudo mkdir -p /var/log/ping_monitor
 sudo chown root:root /var/log/ping_monitor
 sudo chmod 755 /var/log/ping_monitor
 ``` 
 
-立即手工验证一次（看是否报错）：
+### 立即手工验证一次（看是否报错）
 ``` 
 sudo logrotate -vf /etc/logrotate.d/ping_monitor
 ``` 
