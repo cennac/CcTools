@@ -6,10 +6,10 @@ ping_monitor.sh – 多 IP 网络连通性守护脚本
 - 检测间隔 5 秒，实时记录“正常/故障”状态。
 - 只记录状态变化（正常↔故障）到告警日志，避免刷屏；同时可选邮件通知。
 - 日志按天自动切割：
-- 普通流水日志 /var/log/ping_monitor/YYYY-MM-DD.log
-- 状态变化日志 /var/log/ping_alert/YYYY-MM-DD.log
+- 普通流水日志 /var/log/ping_monitor/ping_monitor.log-YYYY-MM-DD.log
+- 状态变化日志 /var/log/ping_monitor/ping_alert.log-YYYY-MM-DD.log
 - 由系统 logrotate 每天零点切分，仅保留最近 7 天。
-- 支持 start / stop / status 三种操作，PID 文件防重复启动。
+- 支持 start / stop / restart / status 三种操作，PID 文件防重复启动。
 - 全程后台运行，零人工干预，适合服务器 7×24 网络质量监控。
 
 
